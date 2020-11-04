@@ -16,20 +16,27 @@ export default class Messages extends Component {
         super(props);
         this.state = {
             assistants: [
-                { id: 1, name: 'Jack', image: Jack },
-                { id: 2, name: 'Andy', image: Andy },
-                { id: 3, name: 'Lily', image: Lily },
-                { id: 4, name: 'Bob', image: Bob },
-                { id: 5, name: 'Sarah', image: Sarah },
-                { id: 6, name: 'John', image: John },
-                { id: 7, name: 'Mady', image: Mady },
+                { id: 0, name: 'Jack', image: Jack },
+                { id: 1, name: 'Andy', image: Andy },
+                { id: 2, name: 'Lily', image: Lily },
+                { id: 3, name: 'Bob', image: Bob },
+                { id: 4, name: 'Sarah', image: Sarah },
+                { id: 5, name: 'John', image: John },
+                { id: 6, name: 'Mady', image: Mady },
             ],
             selectedAssistant: 0, //assistants id
-            messages: [{id:0, message:["Hello", "Hi", "Wondering If you can help me"]}]
+            messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me"] }, { id: 2, message: ["Hello"] }]
         }
     }
-    render() {
 
+    //id of the selected assistant
+    handleAssistantClick(id) {
+        this.setState({
+            selectedAssistant: id
+        });
+    }
+
+    render() {
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -61,7 +68,7 @@ export default class Messages extends Component {
                                         </div>
                                         <div>
                                             {this.state.assistants.map(person =>
-                                                <Row noGutters={true} key={person.id} style={{ borderBottom: "1px solid lightGray", paddingTop: "2%", paddingBottom: "2%" }}>
+                                                <Row className="assistant" noGutters={true} key={person.id} onClick={this.handleAssistantClick.bind(this, person.id)}>
                                                     <Col>
                                                         <img src={person.image} className="personImage" alt="person" />
                                                         <h4 style={{ marginTop: "13%", marginRight: "30%" }}>{person.name}</h4>
@@ -94,35 +101,35 @@ export default class Messages extends Component {
                                 {/*messages */}
                                 <Row>
                                     <Col>
-                                        {this.state.messages[0].message.map((message,index) => 
-                                        
+                                        {this.state.messages[this.state.selectedAssistant] !== undefined &&
+                                            this.state.messages[this.state.selectedAssistant].message.map((message, index) =>
                                                 <Row key={index}>
-                                                    <Col style={{margin: "0 10% 0 10%"}}>
+                                                    <Col style={{ margin: "0 10% 0 10%" }}>
                                                         {
                                                             (
                                                                 index % 2 !== 0 && (
-                                                                <div>
-                                                                    <img className="personImage" style={{width : "5%"}} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
-                                                                    <h5 style={{float : "left", margin : "1% 0 0 1%"}}>{message}</h5>
-                                                                </div>
+                                                                    <div>
+                                                                        <img className="personImage" style={{ width: "5%" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                                        <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
+                                                                    </div>
                                                                 )
-                                                            ) || 
+                                                            ) ||
                                                             <div>
-                                                                <img className="personImage" style={{float : "right", width : "5%"}} alt="avatar" src={Lily}></img>
-                                                                <h5 style={{float : "right",margin : "1% 1% 0 0", display: "inline-block"}}>{message}</h5> 
+                                                                <img className="personImage" style={{ float: "right", width: "5%" }} alt="avatar" src={Lily}></img>
+                                                                <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                             </div>
                                                         }
                                                     </Col>
                                                 </Row>
-                                        )}
+                                            )}
                                     </Col>
                                 </Row>
                                 {/*send message utility */}
                                 <Row >
-                                    <Col style={{position : "absolute", bottom:0}}>
+                                    <Col style={{ position: "absolute", bottom: 0 }}>
                                         <Form>
                                             <Form.Control className="messageBox" type="text" placeholder="Message" />
-                                            <span style={{border : "1px solid gray", borderRadius: "10px" ,padding : "0.4%"}}>
+                                            <span style={{ border: "1px solid gray", borderRadius: "10px", padding: "0.4%" }}>
                                                 <img src={sendLogo} alt="send"></img>
                                             </span>
                                         </Form>
