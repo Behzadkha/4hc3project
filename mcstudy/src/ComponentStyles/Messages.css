@@ -1,0 +1,13 @@
+.messagesContainer{
+    margin-top : 2%;
+    width: 90%;
+}
+#courseName{
+    padding-left: 2%;
+}
+.messagesAssistants{
+    border: 2px solid lightgray;
+}
+.searchDiv{
+    max-width: 300px;
+}
