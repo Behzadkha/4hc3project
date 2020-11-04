@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Col, Row, Container, Button } from 'react-bootstrap';
+import { Col, Row, Container, Button, Form } from 'react-bootstrap';
 import '../ComponentStyles/Messages.css';
 import searchLogo from '../search.svg';
+import sendLogo from '../send.svg';
 import Jack from '../Images/1.jpg';
 import Andy from '../Images/2.jpg';
 import Lily from '../Images/3.jpg';
@@ -23,10 +24,12 @@ export default class Messages extends Component {
                 { id: 6, name: 'John', image: John },
                 { id: 7, name: 'Mady', image: Mady },
             ],
-            selectedAssistant : 0 //assistants id
+            selectedAssistant: 0, //assistants id
+            messages: [{id:0, message:["Hello", "Hi", "Wondering If you can help me"]}]
         }
     }
     render() {
+
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -80,17 +83,53 @@ export default class Messages extends Component {
                                 </h4>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col className="messagesBox">
-                                <img className="personImage" style={{width : "10%"}} src={this.state.assistants[this.state.selectedAssistant].image} alt="assistant"/>
+                        <Row className="messagesColumn">
+                            <Col >
+                                {/*Assistant being contacted info */}
+                                <Row>
+                                    <Col>
+                                        <img className="personImage" style={{ width: "10%" }} src={this.state.assistants[this.state.selectedAssistant].image} alt="assistant" />
+                                    </Col>
+                                </Row>
+                                {/*messages */}
+                                <Row>
+                                    <Col>
+                                        {this.state.messages[0].message.map((message,index) => 
+                                        
+                                                <Row key={index}>
+                                                    <Col style={{margin: "0 10% 0 10%"}}>
+                                                        {
+                                                            (
+                                                                index % 2 !== 0 && (
+                                                                <div>
+                                                                    <img className="personImage" style={{width : "5%"}} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                                    <h5 style={{float : "left", margin : "1% 0 0 1%"}}>{message}</h5>
+                                                                </div>
+                                                                )
+                                                            ) || 
+                                                            <div>
+                                                                <img className="personImage" style={{float : "right", width : "5%"}} alt="avatar" src={Lily}></img>
+                                                                <h5 style={{float : "right",margin : "1% 1% 0 0", display: "inline-block"}}>{message}</h5> 
+                                                            </div>
+                                                        }
+                                                    </Col>
+                                                </Row>
+                                        )}
+                                    </Col>
+                                </Row>
+                                {/*send message utility */}
+                                <Row >
+                                    <Col style={{position : "absolute", bottom:0}}>
+                                        <Form>
+                                            <Form.Control className="messageBox" type="text" placeholder="Message" />
+                                            <span style={{border : "1px solid gray", borderRadius: "10px" ,padding : "0.4%"}}>
+                                                <img src={sendLogo} alt="send"></img>
+                                            </span>
+                                        </Form>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col>
-                                sd
-                            </Col>
-                        </Row>
-
 
                     </Col>
                 </Row>
