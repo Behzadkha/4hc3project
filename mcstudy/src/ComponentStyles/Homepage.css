@@ -16,9 +16,9 @@
     font-size: 100%;
 }
 
-#HomepageFavoriteImages{
-    width: 13%;
-    height: 13%;
+#HomepageOtherCourses{
+    width: 10%;
+    height: 10%;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -37,3 +37,20 @@
     border-radius: 10px;
   }
 
+.courses{
+    position: relative;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+
+}
+.coursetext{
+    white-space: normal;
+    font-family: 'Oswald', sans-serif;
+    font-size: 90%;
+    width: 100px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
