@@ -1,0 +1,26 @@
+.messagesContainer{
+    margin-top : 2%;
+    width: 90%;
+}
+#courseName{
+    padding-left: 2%;
+}
+.messagesAssistants{
+    border: 2px solid lightgray;
+    padding: 2%;
+}
+.searchDiv{
+    margin-top: 1%;
+    margin-left: 2%;
+}
+.personImage{
+    float: left;
+    width: 30%;
+    border-radius: 50px;
+}
+.messagesBox{
+    border: 2px solid lightgray;
+}
+#messageBoxImage{
+    width : 10%;
+}
