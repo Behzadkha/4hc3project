@@ -13,25 +13,23 @@ import course8 from '../Images/course8.png';
 import course9 from '../Images/course9.png';
 import course10 from '../Images/course10.png';
 export default class Homepage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state= {
-            courses: ['course1','course2','course3','course4','course5','course6','course7','course8','course9','course10']
+        this.state = {
+            favoriteCourses: [course1, course2, course3, course4, course5, course6, course7, course8, course9, course10]
         }
     }
     render() {
-        let coursesimage = this.state.courses.map((course, index) => {
-            return <img key={index} src={course} id="HomepageFavoriteImages" alt="First slide"/>
-        });
+        //let coursesimage = ;
         return (
             <div>
                 <h1 id="HomepageTitle">McStudy</h1>
                 <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" style={{ marginLeft: "50%" }}>Manage Homepage</Button>
                 <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" style={{ marginLeft: "0.1%" }}>Rate a Course</Button>
-                <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{marginLeft: "10%", marginRight: "10%" }}>
-                    <h1 id="HomepageTitle2" style={{fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorite</h1>
-                    <div className="p-3" style={{marginLeft: "12%", marginRight: "12%", overflowX: "scroll", whiteSpace: "nowrap"}}>
-                        {coursesimage}
+                <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{ marginLeft: "10%", marginRight: "10%" }}>
+                    <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorite</h1>
+                    <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "scroll", whiteSpace: "nowrap" }}>
+                        {this.state.favoriteCourses.map((course, index) => {return <img key={index} src={course} id="HomepageFavoriteImages" alt="First slide" />})}
                     </div>
 
                 </div>
