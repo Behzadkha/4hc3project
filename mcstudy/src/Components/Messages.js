@@ -26,7 +26,8 @@ export default class Messages extends Component {
             ],
             id : 7,
             selectedAssistant: 0, //assistants index
-            messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me with A1", "Sure, which quesion?"] }, { id: 2, message: ["Hello"] }]
+            messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me with A1", "Sure, which quesion?"] }, { id: 2, message: ["Hello"] }],
+            input: [{}] //id:0, message:[], to save the text written but not sent yet
         }
     }
 
@@ -37,22 +38,45 @@ export default class Messages extends Component {
         });
     }
     //handle send message
-    handleSendMessage(id){
+    handleSendMessage(id,e){
+        e.preventDefault();
         let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
+        let inputIndex = this.state.input.findIndex(({id}) => id === this.state.selectedAssistant);
         let messages = this.state.messages;
         //a message has already been sent
         if(messageIndex >= 0){
-            messages[messageIndex].message.push("hello");
+            messages[messageIndex].message.push(this.state.input[inputIndex].text);
         }else{
-            messages.push({id : id, message: ["hello"]});   
+            messages.push({id : id, message: [this.state.input[inputIndex].text]});   
         }
+        //also empty the input field
+        let tempStateInput = this.state.input;
+        tempStateInput[inputIndex].text = "";
         this.setState({
+            input : tempStateInput,
             messages : messages
         });
     }
 
+    //handle user is writing something
+    onchangeMessage(inputIndex, e){
+        let input = e.target.value;
+        let tempStateInput = this.state.input;
+        //there is already message with that person in the message box
+        if (inputIndex >= 0){
+            tempStateInput[inputIndex].text = input;
+        }else{
+            tempStateInput.push({id:this.state.selectedAssistant, text : input});
+        }
+        this.setState({
+            input : tempStateInput
+        });
+
+    }
+
     render() {
         let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
+        let inputIndex = this.state.input.findIndex(({id}) => id === this.state.selectedAssistant);
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -87,7 +111,7 @@ export default class Messages extends Component {
                                                 <Row className="assistant" noGutters={true} key={person.id} onClick={this.handleAssistantClick.bind(this, person.id)}>
                                                     <Col>
                                                         <img src={person.image} className="personImage" alt="person" />
-                                                        <h4 style={{ marginTop: "13%", marginRight: "30%" }}>{person.name}</h4>
+                                                        <h4 style={{ marginTop: "13%", marginLeft: "40%" }}>{person.name}</h4>
                                                     </Col>
                                                 </Row>
                                             )}
@@ -99,7 +123,7 @@ export default class Messages extends Component {
                     </Col>
                     {/*right column*/}
                     <Col>
-                        <Row>
+                        <Row style={{margin: "auto", textAlign : "center"}}>
                             <Col>
                                 <h4>
                                     Messages
@@ -126,13 +150,13 @@ export default class Messages extends Component {
                                                                 (
                                                                     (index % 2 !== 0) && (
                                                                         <div>
-                                                                            <img className="personImage" style={{ width: "5%" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                                            <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
                                                                             <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
                                                                         </div>
                                                                     )
                                                                 ) ||
                                                                 <div>
-                                                                    <img className="personImage" style={{ float: "right", width: "5%" }} alt="avatar" src={Lily}></img>
+                                                                    <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={Lily}></img>
                                                                     <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
                                                             )||
@@ -150,12 +174,12 @@ export default class Messages extends Component {
                                 </Row>
                                 {/*send message utility */}
                                 <Row >
-                                    <Col style={{ position: "absolute", bottom: 0 }}>
+                                    <Col style={{ position: "absolute", bottom: 0 , margin: "auto", textAlign : "center"}}>
                                         <Form>
-                                            <Form.Control className="messageBox" type="text" placeholder="Message" />
-                                            <span style={{ border: "1px solid gray", borderRadius: "10px", padding: "0.4%" }} onClick={this.handleSendMessage.bind(this,this.state.selectedAssistant)}>
+                                            <Form.Control className="messageBox" type="text" placeholder="Message" value={inputIndex >= 0 ? this.state.input[inputIndex].text : ''} onChange={this.onchangeMessage.bind(this, inputIndex)}/>
+                                            <button type="submit" style={{border : "1px solid gray" ,borderRadius : "10px", padding : "5px"}} onClick={this.handleSendMessage.bind(this,this.state.selectedAssistant)}>
                                                 <img src={sendLogo} alt="send"></img>
-                                            </span>
+                                            </button>
                                         </Form>
                                     </Col>
                                 </Row>
