@@ -20,7 +20,7 @@ export default class Homepage extends Component {
                 <h1 id="HomepageTitle">McStudy</h1>
                 <div style={{paddingLeft : "70%" }}>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" onClick={() => { this.setState({ manageHomepage: true }) }}>Manage Homepage</Button>
-                    <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons">Rate a Course</Button>
+                    <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons" onClick={() => {this.props.history.push('/rateacourse')}}>Rate a Course</Button>
                 </div>
                 <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{ marginLeft: "10%", marginRight: "10%" }}>
                     <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorites</h1>
@@ -41,7 +41,7 @@ export default class Homepage extends Component {
                     <hr></hr>
                     <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>General</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowY: "scroll" }}>
-                        <div className="courses" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "grabbing" }}>
+                        <div className="courses" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>
                         </div>
