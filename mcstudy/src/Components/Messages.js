@@ -24,11 +24,14 @@ export default class Messages extends Component {
                 { id: 5, name: 'John', image: John },
                 { id: 6, name: 'Mady', image: Mady },
             ],
-            id : 7,
+            id: 7,
             selectedAssistant: 0, //assistants index
             messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me with A1", "Sure, which quesion?"] }, { id: 2, message: ["Hello"] }],
-            input: [{}] //id:0, message:[], to save the text written but not sent yet
+            input: [{}], //id:0, message:[], to save the text written but not sent yet
+            timer : 0, // for demo, Andy sends a message after 5 seconds of recieveing a message
+            interval : 0
         }
+
     }
 
     //id of the selected assistant
@@ -38,45 +41,63 @@ export default class Messages extends Component {
         });
     }
     //handle send message
-    handleSendMessage(id,e){
+    handleSendMessage(id, e) {
         e.preventDefault();
-        let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
-        let inputIndex = this.state.input.findIndex(({id}) => id === this.state.selectedAssistant);
+        let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
+        let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messages = this.state.messages;
         //a message has already been sent
-        if(messageIndex >= 0){
+        if (messageIndex >= 0) {
             messages[messageIndex].message.push(this.state.input[inputIndex].text);
-        }else{
-            messages.push({id : id, message: [this.state.input[inputIndex].text]});   
+        } else {
+            messages.push({ id: id, message: [this.state.input[inputIndex].text] });
         }
         //also empty the input field
         let tempStateInput = this.state.input;
         tempStateInput[inputIndex].text = "";
+
         this.setState({
-            input : tempStateInput,
-            messages : messages
+            input: tempStateInput,
+            messages: messages
         });
+
+        //demo only
+        //if the id == 1 which is andy, start the timer, for a fake reply
+        if(id === 1){
+            this.startTimer();
+        }
     }
 
     //handle user is writing something
-    onchangeMessage(inputIndex, e){
+    onchangeMessage(inputIndex, e) {
         let input = e.target.value;
         let tempStateInput = this.state.input;
         //there is already message with that person in the message box
-        if (inputIndex >= 0){
+        if (inputIndex >= 0) {
             tempStateInput[inputIndex].text = input;
-        }else{
-            tempStateInput.push({id:this.state.selectedAssistant, text : input});
+        } else {
+            tempStateInput.push({ id: this.state.selectedAssistant, text: input });
         }
         this.setState({
-            input : tempStateInput
+            input: tempStateInput
         });
 
     }
 
+    //start timer(for demo only)
+    startTimer(){
+        let interval = setInterval(() => {
+            this.setState({timer : this.state.timer + 1})
+        }, 1000);
+        this.setState({
+            interval : interval
+        });
+    }
+
     render() {
-        let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
-        let inputIndex = this.state.input.findIndex(({id}) => id === this.state.selectedAssistant);
+        let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
+        let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
+        console.log(this.state.timer);
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -123,7 +144,7 @@ export default class Messages extends Component {
                     </Col>
                     {/*right column*/}
                     <Col>
-                        <Row style={{margin: "auto", textAlign : "center"}}>
+                        <Row style={{ margin: "auto", textAlign: "center" }}>
                             <Col>
                                 <h4>
                                     Messages
@@ -145,7 +166,7 @@ export default class Messages extends Component {
                                             this.state.messages[messageIndex].message.map((message, index) =>
                                                 <Row key={index}>
                                                     <Col style={{ margin: "0 10% 0 10%" }}>
-                                                        {(index < 4 && this.state.selectedAssistant === 0) && 
+                                                        {(index < 4 && this.state.selectedAssistant === 0) &&
                                                             (
                                                                 (
                                                                     (index % 2 !== 0) && (
@@ -159,25 +180,39 @@ export default class Messages extends Component {
                                                                     <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={Lily}></img>
                                                                     <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 <div>
-                                                                    <img className="personImage" style={{ float: "right", width: "5%", paddingTop : "10px"}} alt="avatar" src={Lily}></img>
+                                                                    <img className="personImage" style={{ float: "right", width: "5%", paddingTop: "10px" }} alt="avatar" src={Lily}></img>
                                                                     <h5 style={{ float: "right", margin: "2% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
                                                             )
                                                         }
                                                     </Col>
                                                 </Row>
-                                            )}
+                                            )
+                                        }
+                                        {/*Hard coded message after 10 seconds from Andy(id=1)*/}
+                                        {(this.state.selectedAssistant === 1 && this.state.timer === 10) &&
+                                            <Row>
+                                                {clearInterval(this.state.interval)}
+                                                <Col style={{ margin: "0 10% 0 10%" }}>
+                                                    <div>
+                                                        <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                        <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{"Np, give me an hour"}</h5>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        }
+
                                     </Col>
                                 </Row>
                                 {/*send message utility */}
                                 <Row >
-                                    <Col style={{ position: "absolute", bottom: 0 , margin: "auto", textAlign : "center"}}>
+                                    <Col style={{ position: "absolute", bottom: 0, margin: "auto", textAlign: "center" }}>
                                         <Form>
-                                            <Form.Control className="messageBox" type="text" placeholder="Message" value={inputIndex >= 0 ? this.state.input[inputIndex].text : ''} onChange={this.onchangeMessage.bind(this, inputIndex)}/>
-                                            <button type="submit" style={{border : "1px solid gray" ,borderRadius : "10px", padding : "5px"}} onClick={this.handleSendMessage.bind(this,this.state.selectedAssistant)}>
+                                            <Form.Control className="messageBox" type="text" placeholder="Message" value={inputIndex >= 0 ? this.state.input[inputIndex].text : ''} onChange={this.onchangeMessage.bind(this, inputIndex)} />
+                                            <button type="submit" style={{ border: "1px solid gray", borderRadius: "10px", padding: "5px" }} onClick={this.handleSendMessage.bind(this, this.state.selectedAssistant)}>
                                                 <img src={sendLogo} alt="send"></img>
                                             </button>
                                         </Form>
