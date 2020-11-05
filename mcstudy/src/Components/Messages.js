@@ -26,14 +26,14 @@ export default class Messages extends Component {
                 { id: 6, name: 'Mady', image: Mady, rating: 5 },
             ],
             id: 7,
-            selectedAssistant: 0, //assistants index
+            selectedAssistant: 0, //assistants id
             messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me with A1", "Sure, which quesion?"] }, { id: 2, message: ["Hello"] }],
-            input: [{}], //id:0, message:[], to save the text written but not sent yet
+            input: [], //{id:0, message:[]}, to save the text written but not sent yet
             timer: 0, // for demo, Andy sends a message after 5 seconds of recieveing a message
             interval: 0, // for demo ^
             searchInput: "",// the input from the assistant's search field
-            showRatingModal: true,
-            ratingPerson: 0, //the person being rated
+            showRatingModal: false,
+            ratingPerson: 0, //the id of the person being rated
             newRating: 0
         }
 
@@ -51,6 +51,7 @@ export default class Messages extends Component {
         let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
         let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messages = this.state.messages;
+        
         //a message has already been sent
         if (messageIndex >= 0) {
             messages[messageIndex].message.push(this.state.input[inputIndex].text);
@@ -60,7 +61,6 @@ export default class Messages extends Component {
         //also empty the input field
         let tempStateInput = this.state.input;
         tempStateInput[inputIndex].text = "";
-
         this.setState({
             input: tempStateInput,
             messages: messages
@@ -71,6 +71,7 @@ export default class Messages extends Component {
         if (id === 1) {
             this.startTimer();
         }
+
     }
 
     //handle user is writing something
@@ -112,17 +113,31 @@ export default class Messages extends Component {
     //save rating and close modal
     saveRating() {
         let assistants = this.state.assistants;
-        assistants[this.state.ratingPerson].rating = this.state.newRating;
+        let assistantIndex = this.state.assistants.findIndex(({ id }) => id === this.state.ratingPerson);
+        assistants[assistantIndex].rating = this.state.newRating;
         this.setState({
             showRatingModal: false,
             assistants: assistants,
             newRating: 0
         })
     }
+    //sort assistants by raing
+    sortByRating(){
+        let assistants = this.state.assistants;
+        //sort decrementally 
+        assistants.sort((a,b) => b.rating - a.rating);
+        this.setState({
+            assistants : assistants
+        });
+    }
 
     render() {
+        let assistantIndex= this.state.assistants.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
         let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
+        let ratingPersonIndex = this.state.assistants.findIndex(({ id }) => id === this.state.ratingPerson);
+        if(this.state.timer === 5)
+            clearInterval(this.state.interval);
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -137,7 +152,11 @@ export default class Messages extends Component {
                                         <h6>Assistants</h6>
                                     </Col>
                                     <Col lg="4">
-                                        <Button style={{ fontSize: "14px" }}>Sort by Rate</Button>
+                                        <Button 
+                                            style={{ fontSize: "14px" }}
+                                            className="btn-sm"
+                                            onClick={this.sortByRating.bind(this)}
+                                            >Sort by Rating</Button>
                                     </Col>
                                     <Col lg="2">
                                         <Button style={{ fontSize: "14px" }} onClick={() => this.setState({ showRatingModal: true })}>Rate</Button>
@@ -157,7 +176,6 @@ export default class Messages extends Component {
                                         <div>
                                             {this.state.assistants.map(person => {
                                                 if (this.state.searchInput !== "" && (person.name.toUpperCase()).startsWith(this.state.searchInput.toUpperCase())) {
-                                                    console.log("hje");
                                                     return (
                                                         <Row className="assistant" noGutters={true} key={person.id} onClick={this.handleAssistantClick.bind(this, person.id)}>
                                                             <Col>
@@ -180,7 +198,7 @@ export default class Messages extends Component {
                                                         </Row>
                                                     )
                                                 else
-                                                    return <h1>Not valid</h1>
+                                                    return null
                                             }
                                             )}
                                         </div>
@@ -200,54 +218,54 @@ export default class Messages extends Component {
                         </Row>
                         <Row className="messagesColumn">
                             <Col >
-                                {/*Assistant being contacted, info */}
+                                {/*Assistant being shown on the right, info */}
                                 <Row>
                                     <Col>
                                         {this.state.assistants.length >= 1 &&
-                                            <img className="personImage" style={{ width: "10%" }} src={this.state.assistants[this.state.selectedAssistant].image} alt="assistant" />
+                                            <img className="personImage" style={{ width: "10%" }} src={this.state.assistants[assistantIndex].image} alt="assistant" />
                                         }
                                     </Col>
                                 </Row>
                                 {/*messages */}
                                 <Row>
                                     <Col>
-                                        {(messageIndex >= 0 && this.state.assistants[this.state.selectedAssistant] !== undefined) &&
+                                        {(messageIndex >= 0 && this.state.assistants[assistantIndex] !== undefined) &&
                                             this.state.messages[messageIndex].message.map((message, index) =>
                                                 <Row key={index}>
                                                     <Col style={{ margin: "0 10% 0 10%" }}>
-                                                        {(index < 4 && this.state.selectedAssistant === 0) &&
-                                                            ((
+                                                        {(index < 4 && this.state.selectedAssistant === 0) ?
+                                                            (
                                                                 (
-                                                                    (index % 2 !== 0) && (
+                                                                    (index % 2 !== 0) ? (
                                                                         <div>
-                                                                            <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                                            <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[assistantIndex].image}></img>
                                                                             <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
                                                                         </div>
-                                                                    )
+                                                                    ): null
                                                                 ) ||
                                                                 <div>
                                                                     <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={Lily}></img>
                                                                     <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
-                                                            ) ||
+                                                            ) :
                                                             (
                                                                 <div>
                                                                     <img className="personImage" style={{ float: "right", width: "5%", paddingTop: "10px" }} alt="avatar" src={Lily}></img>
                                                                     <h5 style={{ float: "right", margin: "2% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
-                                                            ))
+                                                            )
                                                         }
                                                     </Col>
                                                 </Row>
                                             )
                                         }
-                                        {/*Hard coded message after 5 seconds from Andy(id=1)*/}
-                                        {(this.state.selectedAssistant === 1 && this.state.timer === 5) &&
+                                        {/*Hard coded message after 5 seconds from Andy*/}
+                                        {(this.state.assistants[assistantIndex].name === "Andy" && this.state.timer === 5) &&
                                             <Row>
-                                                {clearInterval(this.state.interval)}
+                                                
                                                 <Col style={{ margin: "0 10% 0 10%" }}>
                                                     <div>
-                                                        <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                        <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[assistantIndex].image}></img>
                                                         <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{"Np, give me an hour"}</h5>
                                                     </div>
                                                 </Col>
@@ -260,7 +278,7 @@ export default class Messages extends Component {
                                 <Row >
                                     <Col style={{ position: "absolute", bottom: 0, margin: "auto", textAlign: "center" }}>
                                         <Form>
-                                            <Form.Control className="messageBox" type="text" placeholder="Message" value={inputIndex >= 0 ? this.state.input[inputIndex].text : ''} onChange={this.onchangeMessage.bind(this, inputIndex)} />
+                                            <Form.Control className="messageBox" type="text" placeholder="Message" value={inputIndex >= 0 ? this.state.input[inputIndex].text : ""} onChange={this.onchangeMessage.bind(this, inputIndex)} />
                                             <button type="submit" style={{ border: "1px solid gray", borderRadius: "10px", padding: "5px" }} onClick={this.handleSendMessage.bind(this, this.state.selectedAssistant)}>
                                                 <img src={sendLogo} alt="send"></img>
                                             </button>
@@ -293,9 +311,9 @@ export default class Messages extends Component {
                                 Select an assistant:
                             </h6>
 
-                            <DropdownButton id="dropdown-basic-button" style={{ paddingLeft: "2%" }} title={this.state.assistants[this.state.ratingPerson].name}>
+                            <DropdownButton id="dropdown-basic-button" style={{ paddingLeft: "2%" }} title={this.state.assistants[ratingPersonIndex].name}>
                                 {this.state.assistants.map((person) => {
-                                    if (person.name !== this.state.assistants[this.state.ratingPerson].name) {
+                                    if (person.name !== this.state.assistants[ratingPersonIndex].name) {
                                         return (
                                             <Dropdown.Item key={person.id}
                                                 onClick={() => {
@@ -313,14 +331,14 @@ export default class Messages extends Component {
 
                         </Row>
                         <Row style={{ paddingLeft: "2%" }}>
-                            <img className="personImage" style={{ width: "20%", margin: "4% 0 0 0" }} src={this.state.assistants[this.state.ratingPerson].image} alt="personImage" />
+                            <img className="personImage" style={{ width: "20%", margin: "4% 0 0 0" }} src={this.state.assistants[ratingPersonIndex].image} alt="personImage" />
                             <div style={{ padding: "10% 0 0 5%" }}>
 
                                 <Rating name="size-medium"
                                     value={
                                         (this.state.newRating === 0) 
                                             ?
-                                            this.state.assistants[this.state.ratingPerson].rating
+                                            this.state.assistants[ratingPersonIndex].rating
                                             :
                                             this.state.newRating
                                     }
