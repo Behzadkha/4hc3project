@@ -4,6 +4,7 @@
 }
 #courseName{
     padding-left: 2%;
+    font-size: large;
 }
 .messagesAssistants{
     border: 2px solid lightgray;

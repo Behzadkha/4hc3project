@@ -8,7 +8,7 @@ export default class Homepage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allcourses: ["CS-Human Computer Interfaces", "English-Shakespeare", "EARTHSC-Earth and the Environment","CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
+            allcourses: ["CS-Human Computer Interfaces", "English-Shakespeare", "EARTHSC-Earth and the Environment", "CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
             favoriteCourses: ["CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices"],
             generalCourses: ["CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
             addCourseModal: false, SelectedCourseFromDropDown: "", addCoursetoFavoriteModal: false, manageHomepage: false
@@ -18,25 +18,35 @@ export default class Homepage extends Component {
         return (
             <div>
                 <h1 id="HomepageTitle">McStudy</h1>
-                <div style={{paddingLeft : "70%" }}>
+                <div style={{ paddingLeft: "70%" }}>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" onClick={() => { this.setState({ manageHomepage: true }) }}>Manage Homepage</Button>
-                    <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons" onClick={() => {this.props.history.push('/rateacourse')}}>Rate a Course</Button>
+                    <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons" onClick={() => { this.props.history.push('/rateacourse') }}>Rate a Course</Button>
                 </div>
                 <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{ marginLeft: "10%", marginRight: "10%" }}>
                     <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorites</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "scroll", whiteSpace: "nowrap" }}>
                         <div className="courses" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
-                            <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>
+                            <p className="coursetext" style={{ color: "blue" }}>ADD COURSE TO FAVORITES</p>
                         </div>
+
                         {this.state.favoriteCourses.map((course, index) => {
                             return (
-                                <div key={index} className="courses" style={{ display: "inline-block" }}>
+                                <div key={index} className="courses" style={(course === "CS-Human Computer Interfaces") ? { display: "inline-block", cursor : "pointer" } : { display: "inline-block"}}
+                                    onClick={() => {
+                                        (course === "CS-Human Computer Interfaces") ?
+                                            this.props.history.push({pathname: '/messages',state: { courseName: course }})
+                                        :
+                                            console.log()
+                                    }
+                                    }
+                                >
                                     <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                                     <p className="coursetext">{course}</p>
                                 </div>
                             )
                         })}
+                        
                     </div>
                     <hr></hr>
                     <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>General</h1>
@@ -47,7 +57,15 @@ export default class Homepage extends Component {
                         </div>
                         {this.state.generalCourses.map((course, index) => {
                             return (
-                                <div key={index} className="courses" style={{ display: "inline-block" }}>
+                                <div key={index} className="courses" style={(course === "CS-Human Computer Interfaces") ? { display: "inline-block", cursor : "pointer" } : { display: "inline-block"}}
+                                onClick={() => {
+                                    (course === "CS-Human Computer Interfaces") ?
+                                        this.props.history.push({pathname: '/messages',state: { courseName: course }})
+                                    :
+                                        console.log()
+                                }
+                                }
+                                >
                                     <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                                     <p className="coursetext">{course}</p>
                                 </div>
@@ -67,7 +85,7 @@ export default class Homepage extends Component {
                                 )}
                             </DropdownButton>
                         </Modal.Body>
-                        <Form.Label style={{paddingLeft: "20px", fontWeight: "bold"}}>{this.state.selectedCourseFromDropDown}</Form.Label>
+                        <Form.Label style={{ paddingLeft: "20px", fontWeight: "bold" }}>{this.state.selectedCourseFromDropDown}</Form.Label>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => { this.setState({ addCoursetoFavoriteModal: false, selectedCourseFromDropDown: "" }) }}>Close</Button>
                         </Modal.Footer>
@@ -87,7 +105,7 @@ export default class Homepage extends Component {
                                 <Dropdown.Item>More Courses will be added...</Dropdown.Item>
                             </DropdownButton>
                         </Modal.Body>
-                        <Form.Label style={{paddingLeft: "20px", fontWeight: "bold"}}>{this.state.selectedCourseFromDropDown}</Form.Label>
+                        <Form.Label style={{ paddingLeft: "20px", fontWeight: "bold" }}>{this.state.selectedCourseFromDropDown}</Form.Label>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => { this.setState({ addCourseModal: false, selectedCourseFromDropDown: "" }) }}>Close</Button>
                         </Modal.Footer>
@@ -100,7 +118,7 @@ export default class Homepage extends Component {
                         <Modal.Body>
                             <Form.Label>Delete course:</Form.Label>
                             <Form.Label>Hint: Deleting a course from general list will delete the course from favorites too.</Form.Label>
-                            <Form.Label style={{fontWeight: "bold"}}>General list:</Form.Label>
+                            <Form.Label style={{ fontWeight: "bold" }}>General list:</Form.Label>
                             <DropdownButton id="dropdown-basic-button" title="Dropdown button">
                                 {this.state.generalCourses.map((course, index) =>
                                     <Dropdown.Item key={index} onClick={() => {
@@ -108,28 +126,28 @@ export default class Homepage extends Component {
                                         var tempfavorite = this.state.favoriteCourses
                                         const i = temp.indexOf(course)
                                         const ifa = tempfavorite.indexOf(course)
-                                        if (i > -1) { temp.splice(i, 1); if(ifa > -1){tempfavorite.splice(i,1)} };
-                                        this.setState({ selectedCourseFromDropDown: `${course} deleted successfully`, generalCourses: temp})
+                                        if (i > -1) { temp.splice(i, 1); if (ifa > -1) { tempfavorite.splice(i, 1) } };
+                                        this.setState({ selectedCourseFromDropDown: `${course} deleted successfully`, generalCourses: temp })
                                     }
                                     }>{course}</Dropdown.Item>
                                 )}
                             </DropdownButton>
 
-                            <Form.Label style={{fontWeight: "bold"}}>Favorites:</Form.Label>
+                            <Form.Label style={{ fontWeight: "bold" }}>Favorites:</Form.Label>
                             <DropdownButton id="dropdown-basic-button" title="Dropdown button">
                                 {this.state.favoriteCourses.map((course, index) =>
                                     <Dropdown.Item key={index} onClick={() => {
                                         var temp = this.state.favoriteCourses
                                         const i = temp.indexOf(course)
                                         if (i > -1) { temp.splice(i, 1) };
-                                        this.setState({ selectedCourseFromDropDown: `${course} deleted successfully from your favorites`, favoriteCourses: temp})
+                                        this.setState({ selectedCourseFromDropDown: `${course} deleted successfully from your favorites`, favoriteCourses: temp })
                                     }
                                     }>{course}</Dropdown.Item>
                                 )}
                             </DropdownButton>
                         </Modal.Body>
-                        <Form.Label style={{paddingLeft: "20px", fontWeight: "bold"}}>If you accidently delete a course you can simply add it to your list again.</Form.Label>
-                        <Form.Label style={{paddingLeft: "20px", fontWeight: "bold"}}>{this.state.selectedCourseFromDropDown}</Form.Label>
+                        <Form.Label style={{ paddingLeft: "20px", fontWeight: "bold" }}>If you accidently delete a course you can simply add it to your list again.</Form.Label>
+                        <Form.Label style={{ paddingLeft: "20px", fontWeight: "bold" }}>{this.state.selectedCourseFromDropDown}</Form.Label>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => { this.setState({ manageHomepage: false, selectedCourseFromDropDown: "" }) }}>Close</Button>
                         </Modal.Footer>

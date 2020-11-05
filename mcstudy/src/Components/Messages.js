@@ -51,7 +51,7 @@ export default class Messages extends Component {
         let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
         let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messages = this.state.messages;
-        
+
         //a message has already been sent
         if (messageIndex >= 0) {
             messages[messageIndex].message.push(this.state.input[inputIndex].text);
@@ -122,29 +122,32 @@ export default class Messages extends Component {
         })
     }
     //sort assistants by raing
-    sortByRating(){
+    sortByRating() {
         let assistants = this.state.assistants;
         //sort decrementally 
-        assistants.sort((a,b) => b.rating - a.rating);
+        assistants.sort((a, b) => b.rating - a.rating);
         this.setState({
-            assistants : assistants
+            assistants: assistants
         });
     }
 
     render() {
-        let assistantIndex= this.state.assistants.findIndex(({ id }) => id === this.state.selectedAssistant);
+        let assistantIndex = this.state.assistants.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
         let inputIndex = this.state.input.findIndex(({ id }) => id === this.state.selectedAssistant);
         let ratingPersonIndex = this.state.assistants.findIndex(({ id }) => id === this.state.ratingPerson);
-        if(this.state.timer === 5)
+        if (this.state.timer === 5)
             clearInterval(this.state.interval);
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
                     <Col lg="3">
-                        <h6 id="courseName">
-                            4HC3 - Human Computer Interface
-                        </h6>
+                        <Row className="shadow p-1 mb-1 bg-white rounded" >
+                            <h6 id="courseName">
+                                {this.props.location.state.courseName}
+                            </h6>
+                        </Row>
+                        
                         <Row className="shadow messagesAssistants">
                             <Col>
                                 <Row>
@@ -152,11 +155,11 @@ export default class Messages extends Component {
                                         <h6>Assistants</h6>
                                     </Col>
                                     <Col lg="4">
-                                        <Button 
+                                        <Button
                                             style={{ fontSize: "14px" }}
                                             className="btn-sm"
                                             onClick={this.sortByRating.bind(this)}
-                                            >Sort by Rating</Button>
+                                        >Sort by Rating</Button>
                                     </Col>
                                     <Col lg="2">
                                         <Button style={{ fontSize: "14px" }} onClick={() => this.setState({ showRatingModal: true })}>Rate</Button>
@@ -241,7 +244,7 @@ export default class Messages extends Component {
                                                                             <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[assistantIndex].image}></img>
                                                                             <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
                                                                         </div>
-                                                                    ): null
+                                                                    ) : null
                                                                 ) ||
                                                                 <div>
                                                                     <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={Lily}></img>
@@ -262,7 +265,6 @@ export default class Messages extends Component {
                                         {/*Hard coded message after 5 seconds from Andy*/}
                                         {(this.state.assistants[assistantIndex].name === "Andy" && this.state.timer === 5) &&
                                             <Row>
-                                                
                                                 <Col style={{ margin: "0 10% 0 10%" }}>
                                                     <div>
                                                         <img className="personImage" style={{ width: "6vh" }} alt="avatar" src={this.state.assistants[assistantIndex].image}></img>
@@ -336,7 +338,7 @@ export default class Messages extends Component {
 
                                 <Rating name="size-medium"
                                     value={
-                                        (this.state.newRating === 0) 
+                                        (this.state.newRating === 0)
                                             ?
                                             this.state.assistants[ratingPersonIndex].rating
                                             :

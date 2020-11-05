@@ -6,7 +6,7 @@ export default class RateaCourse extends Component {
         super(props);
         this.state = {
             courses: ["CS-Human Computer Interfaces", "English-Shakespeare", "EARTHSC-Earth and the Environment", "CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
-            ReviewCourse: "Select a course", RateCourse: { RateCourse: "Select a course", YourProfessor: "Your professor's full name", Date: "When did you take this course?", finalGrade: "Your final grade (out of 12)", Comment: "Your comment..." }, year: ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010"], grade: [12,11,10,9,8,7,6,5,'Fail'],
+            ReviewCourse: "Select a course", RateCourse: { RateCourse: "Select a course", YourProfessor: "", Date: "When did you take this course?", finalGrade: "Your final grade (out of 12)", Comment: "" }, year: ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010"], grade: [12,11,10,9,8,7,6,5,'Fail'],
             submitted: false, showSubmittedtext: false, submittedMessage: "",
             submittedReviews: [
                 { RateCourse: "CS-Software Requirements", YourProfessor: "Richard Paige", Date: "2020", finalGrade: "11", Comment: "Best prof, he cares about his students" },
@@ -16,7 +16,7 @@ export default class RateaCourse extends Component {
         }
     }
     render() {
-        let original = { RateCourse: "Select a course", YourProfessor: "Your professor's full name", Date: "When did you take this course?", finalGrade: "Your final grade (out of 12)", Comment: "Your comment..." }
+        let original = { RateCourse: "Select a course", YourProfessor: "", Date: "When did you take this course?", finalGrade: "Your final grade (out of 12)", Comment: "" }
         return (
             <div style={{ textAlign: "center" }}>
                 <Container style={{ marginTop: "5%" }}>
@@ -55,7 +55,8 @@ export default class RateaCourse extends Component {
                             {/* Professor name */}
                             <InputGroup className="mt-3">
                                 <FormControl
-                                    placeholder={this.state.RateCourse.YourProfessor}
+                                    placeholder="Your professor's full name"
+                                    value={this.state.RateCourse.YourProfessor}
                                     aria-label="Professor full nameeee"
                                     aria-describedby="basic-addon1"
                                     onChange={(e) => { var temp = this.state.RateCourse; temp.YourProfessor = e.target.value; this.setState({ RateCourse: temp }) }}
@@ -82,18 +83,18 @@ export default class RateaCourse extends Component {
                             </Dropdown>
                             {/* Comment */}
                             <InputGroup className="mt-3">
-                                <FormControl as="textarea" placeholder={this.state.RateCourse.Comment} aria-label="With textarea" onChange={(e) => { var temp = this.state.RateCourse; temp.Comment = e.target.value; this.setState({ RateCourse: temp }) }} />
+                                <FormControl as="textarea" placeholder="Your comment..." value={this.state.RateCourse.Comment} aria-label="With textarea" onChange={(e) => { var temp = this.state.RateCourse; temp.Comment = e.target.value; this.setState({ RateCourse: temp }) }} />
                             </InputGroup>
+                            {/* Submit button */}
                             <Button variant="primary" className="mt-3" onClick={() => {
                                 if(this.state.RateCourse.RateCourse !== "Select a course" && this.state.RateCourse.YourProfessor !== "Your professor's full name"){
-                                    this.setState({ submittedReviews: [...this.state.submittedReviews, this.state.RateCourse], submitted: true })
+                                    this.setState({ submittedReviews: [...this.state.submittedReviews, this.state.RateCourse], RateCourse: original, showSubmittedtext: true })
                                 }
                                 else{
                                     this.setState({submittedMessage: "Make sure you have selected a course."})
                                 }
                                 
                             }}>Submit</Button>
-                            {this.state.submitted ? this.setState({ RateCourse: original, showSubmittedtext: true, submitted: false }) : ''}
                             {this.state.showSubmittedtext ? <h3>Thank you for submitting your course evaluation</h3> : <h3>{this.state.submittedMessage}</h3>}
                         </Col>
                     </Row>
