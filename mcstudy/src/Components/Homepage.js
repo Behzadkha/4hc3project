@@ -25,7 +25,7 @@ export default class Homepage extends Component {
                 <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{ marginLeft: "10%", marginRight: "10%" }}>
                     <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorites</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "scroll", whiteSpace: "nowrap" }}>
-                        <div className="courses" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "grabbing" }}>
+                        <div className="courses" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>
                         </div>
