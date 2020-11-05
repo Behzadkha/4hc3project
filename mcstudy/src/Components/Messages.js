@@ -24,8 +24,9 @@ export default class Messages extends Component {
                 { id: 5, name: 'John', image: John },
                 { id: 6, name: 'Mady', image: Mady },
             ],
-            selectedAssistant: 0, //assistants id
-            messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me"] }, { id: 2, message: ["Hello"] }]
+            id : 7,
+            selectedAssistant: 0, //assistants index
+            messages: [{ id: 0, message: ["Hello", "Hi", "Wondering If you can help me with A1", "Sure, which quesion?"] }, { id: 2, message: ["Hello"] }]
         }
     }
 
@@ -35,8 +36,23 @@ export default class Messages extends Component {
             selectedAssistant: id
         });
     }
+    //handle send message
+    handleSendMessage(id){
+        let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
+        let messages = this.state.messages;
+        //a message has already been sent
+        if(messageIndex >= 0){
+            messages[messageIndex].message.push("hello");
+        }else{
+            messages.push({id : id, message: ["hello"]});   
+        }
+        this.setState({
+            messages : messages
+        });
+    }
 
     render() {
+        let messageIndex = this.state.messages.findIndex(({id}) => id === this.state.selectedAssistant);
         return (
             <Container fluid className="messagesContainer">
                 <Row className="shadow">
@@ -92,7 +108,7 @@ export default class Messages extends Component {
                         </Row>
                         <Row className="messagesColumn">
                             <Col >
-                                {/*Assistant being contacted info */}
+                                {/*Assistant being contacted, info */}
                                 <Row>
                                     <Col>
                                         <img className="personImage" style={{ width: "10%" }} src={this.state.assistants[this.state.selectedAssistant].image} alt="assistant" />
@@ -101,23 +117,31 @@ export default class Messages extends Component {
                                 {/*messages */}
                                 <Row>
                                     <Col>
-                                        {this.state.messages[this.state.selectedAssistant] !== undefined &&
-                                            this.state.messages[this.state.selectedAssistant].message.map((message, index) =>
+                                        {messageIndex >= 0 &&
+                                            this.state.messages[messageIndex].message.map((message, index) =>
                                                 <Row key={index}>
                                                     <Col style={{ margin: "0 10% 0 10%" }}>
-                                                        {
+                                                        {(index < 4 && this.state.selectedAssistant === 0) && 
                                                             (
-                                                                index % 2 !== 0 && (
-                                                                    <div>
-                                                                        <img className="personImage" style={{ width: "5%" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
-                                                                        <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
-                                                                    </div>
-                                                                )
-                                                            ) ||
-                                                            <div>
-                                                                <img className="personImage" style={{ float: "right", width: "5%" }} alt="avatar" src={Lily}></img>
-                                                                <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
-                                                            </div>
+                                                                (
+                                                                    (index % 2 !== 0) && (
+                                                                        <div>
+                                                                            <img className="personImage" style={{ width: "5%" }} alt="avatar" src={this.state.assistants[this.state.selectedAssistant].image}></img>
+                                                                            <h5 style={{ float: "left", margin: "1% 0 0 1%" }}>{message}</h5>
+                                                                        </div>
+                                                                    )
+                                                                ) ||
+                                                                <div>
+                                                                    <img className="personImage" style={{ float: "right", width: "5%" }} alt="avatar" src={Lily}></img>
+                                                                    <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
+                                                                </div>
+                                                            )||
+                                                            (
+                                                                <div>
+                                                                    <img className="personImage" style={{ float: "right", width: "5%", paddingTop : "10px"}} alt="avatar" src={Lily}></img>
+                                                                    <h5 style={{ float: "right", margin: "2% 1% 0 0", display: "inline-block" }}>{message}</h5>
+                                                                </div>
+                                                            )
                                                         }
                                                     </Col>
                                                 </Row>
@@ -129,7 +153,7 @@ export default class Messages extends Component {
                                     <Col style={{ position: "absolute", bottom: 0 }}>
                                         <Form>
                                             <Form.Control className="messageBox" type="text" placeholder="Message" />
-                                            <span style={{ border: "1px solid gray", borderRadius: "10px", padding: "0.4%" }}>
+                                            <span style={{ border: "1px solid gray", borderRadius: "10px", padding: "0.4%" }} onClick={this.handleSendMessage.bind(this,this.state.selectedAssistant)}>
                                                 <img src={sendLogo} alt="send"></img>
                                             </span>
                                         </Form>
