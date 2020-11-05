@@ -18,7 +18,7 @@ export default class Homepage extends Component {
         return (
             <div>
                 <h1 id="HomepageTitle">McStudy</h1>
-                <div style={{ marginLeft: "40%" }}>
+                <div style={{paddingLeft : "70%" }}>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" onClick={() => { this.setState({ manageHomepage: true }) }}>Manage Homepage</Button>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons">Rate a Course</Button>
                 </div>
