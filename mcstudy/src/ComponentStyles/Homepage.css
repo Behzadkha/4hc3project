@@ -1,13 +1,15 @@
 #HomepageTitle{
     font-family: 'Oswald', sans-serif;
-    margin-left: 5%;
-    font-size: 250%;
+    margin-left: 20%;
+    font-size: 200%;
     text-align: left;
 }
 #HomepageTitle2{
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Varela Round', sans-serif;
     margin-left: 1%;
-    font-size: 250%;
+    font-size: 150%;
+    color: black;
+    text-decoration: underline;
     text-align: left;
 }
 
@@ -22,7 +24,8 @@
 }
 /* width */
 ::-webkit-scrollbar {
-    width: 20px;
+    width: 12px;
+    height: 12px;
   }
   
   /* Track */

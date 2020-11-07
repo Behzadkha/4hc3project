@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import '../ComponentStyles/Homepage.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal, Dropdown, DropdownButton, Form } from 'react-bootstrap';
-
 import circle from '../Images/circle.png';
 export default class Homepage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             allcourses: ["CS-Human Computer Interfaces", "English-Shakespeare", "EARTHSC-Earth and the Environment", "CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
-            favoriteCourses: ["CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices"],
+            favoriteCourses: ["CS-Software Requirements", "CS-Capstone Project"],
             generalCourses: ["CS-Software Requirements", "CS-Capstone Project", "Physics-Introductory Physics ", "Math-Calculus", "CS-Databases", "CS-Data Structures and Algorithms", "CS-Discrete Mathematics", "ART-Digital Practices", "MMEDIA-Multimedia and Digital Society", "ECON-Introduction to Microeconomics"],
             addCourseModal: false, SelectedCourseFromDropDown: "", addCoursetoFavoriteModal: false, manageHomepage: false
         }
@@ -17,14 +16,14 @@ export default class Homepage extends Component {
     render() {
         return (
             <div>
-                <h1 id="HomepageTitle">McStudy</h1>
                 <div style={{ paddingLeft: "70%" }}>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded" id="HomepageButtons" onClick={() => { this.setState({ manageHomepage: true }) }}>Manage Homepage</Button>
                     <Button variant="primary" className="shadow p-3 mb-5 rounded ml-1" id="HomepageButtons" onClick={() => { this.props.history.push('/rateacourse') }}>Rate a Course</Button>
                 </div>
                 <div className="shadow-lg p-3 mb-5 bg-white rounded" style={{ marginLeft: "10%", marginRight: "10%" }}>
-                    <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>Favorites</h1>
-                    <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "scroll", whiteSpace: "nowrap" }}>
+                    {/*Favorite part*/}
+                    <h1 id="HomepageTitle2">My Favorites</h1>
+                    <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "auto", whiteSpace: "nowrap" }}>
                         <div className="courses" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE TO FAVORITES</p>
@@ -49,8 +48,9 @@ export default class Homepage extends Component {
                         
                     </div>
                     <hr></hr>
-                    <h1 id="HomepageTitle2" style={{ fontSize: "200%", color: "blue", textDecoration: "underline" }}>General</h1>
-                    <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowY: "scroll" }}>
+                    {/*General part*/}
+                    <h1 id="HomepageTitle2" >General</h1>
+                    <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowY: "scroll", maxHeight: "250px"}}>
                         <div className="courses" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>

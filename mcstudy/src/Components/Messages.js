@@ -176,11 +176,11 @@ export default class Messages extends Component {
                                                 value={this.state.searchInput} onChange={this.handleSearch.bind(this)}
                                             />
                                         </div>
-                                        <div>
+                                        <div style={{overflowY: "scroll", whiteSpace: "nowrap", maxHeight: "720px"}}>
                                             {this.state.assistants.map(person => {
                                                 if (this.state.searchInput !== "" && (person.name.toUpperCase()).startsWith(this.state.searchInput.toUpperCase())) {
                                                     return (
-                                                        <Row className="assistant" noGutters={true} key={person.id} onClick={this.handleAssistantClick.bind(this, person.id)}>
+                                                        <Row className="assistant" noGutters={true} key={person.id} onClick={this.handleAssistantClick.bind(this, person.id)} >
                                                             <Col>
                                                                 <img src={person.image} className="personImage" alt="person" />
                                                                 <h4 style={{ marginTop: "13%", marginLeft: "40%" }}>{person.name}</h4>
