@@ -10,6 +10,7 @@ import Bob from '../Images/4.jpg';
 import Sarah from '../Images/5.jpg';
 import John from '../Images/6.jpg';
 import Mady from '../Images/7.jpg';
+import unknown from '../Images/unknown.png'
 import { Rating } from '@material-ui/lab';
 
 export default class Messages extends Component {
@@ -33,8 +34,10 @@ export default class Messages extends Component {
             interval: 0, // for demo ^
             searchInput: "",// the input from the assistant's search field
             showRatingModal: false,
+            showBecomeAnAssistantModal: false,
             ratingPerson: 0, //the id of the person being rated
-            newRating: 0
+            newRating: 0,
+            newAssistantName: ""
         }
 
     }
@@ -131,6 +134,18 @@ export default class Messages extends Component {
         });
     }
 
+    //become an assistant
+    //save the info of the new assiatant and add to the assistants list
+    saveNewAssistant(){
+        let assistants = this.state.assistants;
+        assistants.push({id:this.state.id, name:this.state.newAssistantName, image:unknown, rating : 0});
+        this.setState({
+            assistants : assistants,
+            newAssistantName : "",
+            showBecomeAnAssistantModal : false
+        });
+    }
+
     render() {
         let assistantIndex = this.state.assistants.findIndex(({ id }) => id === this.state.selectedAssistant);
         let messageIndex = this.state.messages.findIndex(({ id }) => id === this.state.selectedAssistant);
@@ -147,26 +162,27 @@ export default class Messages extends Component {
                                 {this.props.location.state.courseName}
                             </h6>
                         </Row>
-                        
+
                         <Row className="shadow messagesAssistants">
                             <Col>
-                                <Row>
+                                {/*left column-first row*/}
+                                <Row noGutters={true}>
                                     <Col>
                                         <h6>Assistants</h6>
                                     </Col>
-                                    <Col lg="4">
+                                    <Col lg="1">
+                                        <Button className="btn-sm" style={{display : "table-cell"}} onClick={() => this.setState({ showRatingModal: true })}><h6 style={{ fontSize: "13px", paddingTop: "15%" }}>Rate</h6></Button>
+                                    </Col>
+                                    <Col lg="5" style={{paddingLeft : "5%"}}>
                                         <Button
-                                            style={{ fontSize: "14px" }}
                                             className="btn-sm"
-                                            onClick={this.sortByRating.bind(this)}
-                                        >Sort by Rating</Button>
+                                            onClick={() => this.setState({ showBecomeAnAssistantModal: true })}
+                                        ><h6 style={{ fontSize: "13px", paddingTop : "4%" }}>Become an assistant</h6></Button>
                                     </Col>
-                                    <Col lg="2">
-                                        <Button style={{ fontSize: "14px" }} onClick={() => this.setState({ showRatingModal: true })}>Rate</Button>
-                                    </Col>
+                                    
                                 </Row>
                                 <Row>
-                                    {/*left column*/}
+                                    {/*left column-search and people*/}
                                     <Col>
                                         <div className="input-group mb-3" style={{ marginTop: "10px" }}>
                                             <div className="input-group-prepend">
@@ -175,8 +191,13 @@ export default class Messages extends Component {
                                             <input type="text" className="form-control searchDiv" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
                                                 value={this.state.searchInput} onChange={this.handleSearch.bind(this)}
                                             />
+                                            <Button
+                                                style={{ fontSize: "11px", marginLeft: "4%" }}
+                                                className="btn-sm"
+                                                onClick={this.sortByRating.bind(this)}
+                                            >Sort by Rating</Button>
                                         </div>
-                                        <div style={{overflowY: "scroll", whiteSpace: "nowrap", maxHeight: "720px"}}>
+                                        <div style={{ overflowY: "scroll", whiteSpace: "nowrap", maxHeight: "700px" }}>
                                             {this.state.assistants.map(person => {
                                                 if (this.state.searchInput !== "" && (person.name.toUpperCase()).startsWith(this.state.searchInput.toUpperCase())) {
                                                     return (
@@ -247,13 +268,13 @@ export default class Messages extends Component {
                                                                     ) : null
                                                                 ) ||
                                                                 <div>
-                                                                    <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={Lily}></img>
+                                                                    <img className="personImage" style={{ float: "right", width: "6vh", display: "inline-block" }} alt="avatar" src={unknown}></img>
                                                                     <h5 style={{ float: "right", margin: "1% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
                                                             ) :
                                                             (
                                                                 <div>
-                                                                    <img className="personImage" style={{ float: "right", width: "5%", paddingTop: "10px" }} alt="avatar" src={Lily}></img>
+                                                                    <img className="personImage" style={{ float: "right", width: "5%", paddingTop: "10px" }} alt="avatar" src={unknown}></img>
                                                                     <h5 style={{ float: "right", margin: "2% 1% 0 0", display: "inline-block" }}>{message}</h5>
                                                                 </div>
                                                             )
@@ -293,7 +314,7 @@ export default class Messages extends Component {
                     </Col>
                 </Row>
 
-                {/*modal */}
+                {/*modal rating*/}
                 <Modal
                     show={this.state.showRatingModal}
                     onHide={() => this.setState({ showRatingModal: false })}
@@ -352,6 +373,36 @@ export default class Messages extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.saveRating.bind(this)}>Save</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/*modal become an assistant*/}
+                <Modal
+                    show={this.state.showBecomeAnAssistantModal}
+                    onHide={() => this.setState({ showBecomeAnAssistantModal: false })}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Assistant Signup
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form style={{ width: "70%", justifyContent: "center", margin: "auto" }}>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>Display name</Form.Label>
+                                <Form.Control type="email" placeholder="Name" value={this.state.newAssistantName} onChange={(e) => this.setState({newAssistantName : e.target.value})}/>
+                                <Form.Text className="text-muted">
+                                    The name you want to be displayed.
+                                </Form.Text>
+                            </Form.Group>
+                        </Form>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.saveNewAssistant.bind(this)}>Save</Button>
                     </Modal.Footer>
                 </Modal>
             </Container>
