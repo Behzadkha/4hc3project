@@ -48,7 +48,7 @@ export default class Homepage extends Component {
                     {/*General part*/}
                     <h1 id="HomepageTitle2" >General</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowY: "scroll", maxHeight: "250px"}}>
-                        <div className="courses" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
+                        <div className="courses courseImages" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
                             <img style={{blockSize : "120px"}} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>
                         </div>
