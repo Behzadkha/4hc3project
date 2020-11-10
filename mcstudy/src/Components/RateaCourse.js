@@ -11,6 +11,7 @@ export default class RateaCourse extends Component {
             submittedReviews: [
                 { RateCourse: "CS-Software Requirements", YourProfessor: "Richard Paige", Date: "2020", finalGrade: "11", Comment: "Best prof, he cares about his students" },
                 { RateCourse: "CS-Capstone Project", YourProfessor: "Jacques Carette", Date: "2020", finalGrade: "12", Comment: "I learned a lot in this course." },
+                { RateCourse: "CS-Human Computer Interfaces", YourProfessor: "kevin browne", Date: "2020", finalGrade: "10", Comment: "I learned a lot in this course." },
                 { RateCourse: "CS-Capstone Project", YourProfessor: "Jacques Carette", Date: "2019", finalGrade: "11", Comment: "I really liked this course. I learned a lot about software development life cycle " }
             ]
         }

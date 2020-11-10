@@ -13,7 +13,6 @@ export default class CourseReviews extends Component {
                                 <Table key={index} className="shadow p-1 mb-1 bg-white rounded" striped bordered hover>
                                     <thead>
                                         <tr>
-                                            <th style={{ width: "5%" }}>Review</th>
                                             <th style={{ width: "10%" }}>Professor</th>
                                             <th style={{ width: "5%" }}>Date</th>
                                             <th style={{ width: "10%" }}>My final grade</th>
@@ -22,7 +21,6 @@ export default class CourseReviews extends Component {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{index}</td>
                                             <td>{review.YourProfessor}</td>
                                             <td>{review.Date}</td>
                                             <td>{review.finalGrade}</td>
