@@ -57,3 +57,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.courseImages{
+    block-size : 120px;
+}
+.courseImages:hover{
+    border: 1px solid red;
+    border-radius: 5px;
+}
