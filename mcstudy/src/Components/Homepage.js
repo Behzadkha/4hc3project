@@ -24,23 +24,20 @@ export default class Homepage extends Component {
                     {/*Favorite part*/}
                     <h1 id="HomepageTitle2">My Favorites</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowX: "auto", whiteSpace: "nowrap" }}>
-                        <div className="courses" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
-                            <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
+                        <div className="courses courseImages" onClick={() => { this.setState({ addCoursetoFavoriteModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
+                            <img style={{blockSize : "120px"}} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE TO FAVORITES</p>
                         </div>
 
                         {this.state.favoriteCourses.map((course, index) => {
                             return (
-                                <div key={index} className="courses" style={(course === "CS-Human Computer Interfaces") ? { display: "inline-block", cursor : "pointer" } : { display: "inline-block"}}
+                                <div key={index} className="courses courseImages" style={{ display: "inline-block", cursor : "pointer"}}
                                     onClick={() => {
-                                        (course === "CS-Human Computer Interfaces") ?
                                             this.props.history.push({pathname: '/messages',state: { courseName: course }})
-                                        :
-                                            console.log()
                                     }
                                     }
                                 >
-                                    <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
+                                    <img style={{blockSize : "120px"}} src={circle} alt="circle" />
                                     <p className="coursetext">{course}</p>
                                 </div>
                             )
@@ -52,17 +49,14 @@ export default class Homepage extends Component {
                     <h1 id="HomepageTitle2" >General</h1>
                     <div className="shadow p-3 mb-5 rounded" style={{ marginLeft: "12%", marginRight: "12%", overflowY: "scroll", maxHeight: "250px"}}>
                         <div className="courses" onClick={() => { this.setState({ addCourseModal: true }) }} style={{ display: "inline-block", cursor: "pointer" }}>
-                            <img style={{ blockSize: "120px" }} src={circle} alt="circle" />
+                            <img style={{blockSize : "120px"}} src={circle} alt="circle" />
                             <p className="coursetext" style={{ color: "blue" }}>ADD COURSE</p>
                         </div>
                         {this.state.generalCourses.map((course, index) => {
                             return (
-                                <div key={index} className="courses" style={(course === "CS-Human Computer Interfaces") ? { display: "inline-block", cursor : "pointer" } : { display: "inline-block"}}
+                                <div key={index} className="courses courseImages" style={{ display: "inline-block" , cursor : "pointer"}}
                                 onClick={() => {
-                                    (course === "CS-Human Computer Interfaces") ?
                                         this.props.history.push({pathname: '/messages',state: { courseName: course }})
-                                    :
-                                        console.log()
                                 }
                                 }
                                 >
